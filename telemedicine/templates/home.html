@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; }
+        /* Premium Background */
+        .hero { 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; height: 500px; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; color: white; text-align: center;
+        }
+        .nav-top { position: absolute; top: 20px; right: 20px; }
+        .btn-nav { background: #0d6efd; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-left: 10px; }
+        .search-section { background: white; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 10px; margin: -50px 10% 50px 10%; display: flex; justify-content: space-around; }
+        .quote { font-style: italic; font-size: 1.2rem; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-top">
+        <a href="{% url 'login' %}" class="btn-nav">Patient Login</a>
+        <a href="{% url 'doctor_login' %}" class="btn-nav" style="background:#198754;">Doctor Login</a>
+    </div>
+
+    <div class="hero">
+        <h1>AI-Powered Telemedicine</h1>
+        <p class="quote">"Technology is best when it brings people together to heal."</p>
+    </div>
+
+    <div class="search-section">
+        <form method="GET" action="{% url 'home' %}">
+            <input type="text" name="q" placeholder="Search Hospitals/Doctors..." style="padding:10px; width:300px;">
+            <select name="category" style="padding:10px;">
+                <option value="">All Categories</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="General Physician">General Physician</option>
+                <option value="Pulmonologist">Pulmonologist</option>
+            </select>
+            <button type="submit" style="padding:10px 20px; background:#0d6efd; color:white; border:none;">Search</button>
+        </form>
+    </div>
+
+    <div style="padding: 20px 10%;">
+        <h3>Available Specialists</h3>
+        </div>
+
+</body>
+</html>

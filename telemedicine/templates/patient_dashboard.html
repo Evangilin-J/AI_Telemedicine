@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; color: #333; }
+        .navbar { background-color: #0d6efd; color: rgb(171, 56, 56); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .navbar-brand { font-size: 20px; font-weight: bold; text-decoration: none; color: white; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; display: flex; gap: 30px; }
+        .sidebar { flex: 1; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border-top: 4px solid #0d6efd; height: fit-content; }
+        .main-content { flex: 2.5; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid #0dcaf0; }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #0d6efd; margin-bottom: 15px; }
+        h3 { margin-top: 0; color: #222; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; }
+        .table th, .table td { padding: 12px; border-bottom: 1px solid #dee2e6; }
+        .table th { background-color: #f8f9fa; color: #555; }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+        .status-Pending { background: #fff3cd; color: #856404; }
+        .status-Accepted { background: #d4edda; color: #155724; }
+        .status-Rejected { background: #f8d7da; color: #721c24; }
+        .btn-home { background: #0d6efd; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a class="navbar-brand" href="/">🏥 Patient Portal</a>
+        <a href="{% url 'logout' %}" style="color: white; text-decoration: none; font-weight: bold; background: #dc3545; padding: 6px 12px; border-radius: 4px;">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            {% if profile.patient_image %}
+                <img src="{{ profile.patient_image.url }}" class="profile-img" alt="Patient">
+            {% else %}
+                <div style="font-size: 60px; margin-bottom: 15px;">🤢</div>
+            {% endif %}
+            <h3>{{ user.username }}</h3>
+            <p style="color:#666; margin: 5px 0;">📧 {{ user.email }}</p>
+            <p style="font-size: 14px; background: #e7f1ff; color: #0d6efd; padding: 6px; border-radius: 6px; font-weight: bold; margin-top: 15px;">
+                Age: {{ profile.age|default:"N/A" }} | Gender: {{ profile.gender|default:"N/A" }}
+            </p>
+            <a href="/" class="btn-home">Book New Appointment</a>
+        </div>
+
+        <div class="main-content">
+            <h3>📅 Your Medical Appointments</h3>
+            <p style="color:#666; font-size: 14px;">Track the real-time status of your consultations:</p>
+            
+            {% if appointments %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Doctor Name</th>
+                            <th>Specialization</th>
+                            <th>Requested On</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appt in appointments %}
+                            <tr>
+                                <td><strong>Dr. {{ appt.doctor.user.username }}</strong></td>
+                                <td>{{ appt.doctor.specialization }}</td>
+                                <td>{{ appt.created_at|date:"M d, Y - h:i A" }}</td>
+                                <td><span class="status-badge status-{{ appt.status }}">{{ appt.status }}</span></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div style="text-align: center; padding: 40px; color: #999;">
+                    <span style="font-size: 48px;">📅</span>
+                    <p>No appointments booked yet. Go to home page to consult AI.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

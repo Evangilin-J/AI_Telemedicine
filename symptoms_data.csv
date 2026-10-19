@@ -1,0 +1,9 @@
+Fever,Headache,Cough,Chest_Pain,Disease
+1,1,1,0,Common Cold
+1,1,0,0,Typhoid
+0,1,0,1,Migraine
+1,0,1,1,Bronchitis
+0,0,0,1,Heart Disease
+1,1,1,1,Pneumonia
+1,0,0,0,Mild Fever
+0,1,1,0,Sinusitis

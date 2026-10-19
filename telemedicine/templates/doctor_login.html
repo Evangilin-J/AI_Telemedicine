@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Portal Login</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #198754 0%, #20c997 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%; max-width: 380px; box-sizing: border-box; }
+        h2 { margin-top: 0; color: #198754; text-align: center; font-size: 26px; }
+        p { text-align: center; color: #666; font-size: 14px; margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 14px; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        .btn-success { background: #198754; color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        .btn-success:hover { background: #157347; }
+        .links { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
+        .links a { color: #198754; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>👨‍⚕️ Doctor Portal</h2>
+        <p>Login to view your AI assigned patients</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Doctor Username</label>
+                <input type="text" name="username" id="username" required placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required placeholder="••••••••">
+            </div>
+            
+            <button type="submit" class="btn-success">Doctor Sign In 🔓</button>
+        </form>
+
+        <div class="links">
+            New Doctor? <a href="{% url 'doctor_register' %}">Join Network</a><br><br>
+            <a href="/" style="color:#666; font-weight:normal;">← Back to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>

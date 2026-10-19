@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; color: #333; }
+        .navbar { background-color: #198754; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .navbar-brand { font-size: 20px; font-weight: bold; text-decoration: none; color: white; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; display: flex; gap: 30px; }
+        .sidebar { flex: 1; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border-top: 4px solid #198754; height: fit-content; }
+        .main-content { flex: 2.5; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid #20c997; }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #198754; margin-bottom: 15px; }
+        h3 { margin-top: 0; color: #222; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; }
+        .table th, .table td { padding: 12px; border-bottom: 1px solid #dee2e6; }
+        .table th { background-color: #f8f9fa; color: #555; }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+        .status-Pending { background: #fff3cd; color: #856404; }
+        .status-Accepted { background: #d4edda; color: #155724; }
+        .status-Rejected { background: #f8d7da; color: #721c24; }
+        .btn-action { padding: 6px 12px; border-radius: 4px; border: none; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 13px; display: inline-block; margin-right: 5px; }
+        .btn-accept { background-color: #198754; color: white; }
+        .btn-reject { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a class="navbar-brand" href="/">👨‍⚕️ MD Portal Dashboard</a>
+        <a href="{% url 'logout' %}" style="color: white; text-decoration: none; font-weight: bold; background: #dc3545; padding: 6px 12px; border-radius: 4px;">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            {% if doctor.doctor_image %}
+                <img src="{{ doctor.doctor_image.url }}" class="profile-img" alt="Doctor">
+            {% else %}
+                <div style="font-size: 60px; margin-bottom: 15px;">👨‍⚕️</div>
+            {% endif %}
+            <h3>Dr. {{ user.username }}</h3>
+            <span style="background: #e8f5e9; color: #198754; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 13px;">{{ doctor.specialization }}</span>
+            <p style="color:#666; margin: 15px 0 5px 0;">💼 Experience: <strong>{{ doctor.experience }} Yrs</strong></p>
+            <p style="color:#666; margin: 0; font-size: 13px;">🕒 Time: {{ doctor.available_time }}</p>
+        </div>
+
+        <div class="main-content">
+            <h3>👥 Patient Consultation Requests</h3>
+            <p style="color:#666; font-size: 14px;">Manage and update patient appointments filtered by AI:</p>
+            
+            {% if appointments %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Date Requested</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appt in appointments %}
+                            <tr>
+                                <td><strong>{{ appt.user.username }}</strong></td>
+                                <td>{{ appt.created_at|date:"M d, Y - h:i A" }}</td>
+                                <td><span class="status-badge status-{{ appt.status }}">{{ appt.status }}</span></td>
+                                <td>
+                                    {% if appt.status == "Pending" %}
+                                        <form method="POST" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                                            <button type="submit" name="action" value="Accept" class="btn-action btn-accept">Accept</button>
+                                            <button type="submit" name="action" value="Reject" class="btn-action btn-reject">Reject</button>
+                                        </form>
+                                    {% else %}
+                                        <span style="color:#999; font-size:13px;">Action Taken</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div style="text-align: center; padding: 40px; color: #999;">
+                    <span style="font-size: 48px;">📭</span>
+                    <p>No patient requests found at the moment.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
